@@ -3,10 +3,11 @@ const Store = {
 
   sampleItems: [
     'Math homework - 45 min',
-    'Soccer practice 4:00-5:30 PM',
+    'Mon: Soccer practice 4:00-5:30 PM',
+    'Wed: Soccer practice 4:00-5:30 PM',
     'Eat dinner - 30 min',
     'Read chapter 5 of science book - 20 min',
-    'Clean my room - 15 min',
+    'Sat: Clean my room - 15 min',
   ],
 
   load() {

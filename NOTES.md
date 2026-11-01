@@ -11,9 +11,9 @@ Open a terminal in this folder and run:
 Then open http://localhost:3000 in your browser.
 
 ## What's done (V1)
-- Web page where a student dumps a messy list of things to do + preferences
-- "Organize my day" button sends it to the real OpenAI AI through a small local server (key stays on the server, never in the page)
-- AI returns a clean schedule table plus a friendly message and optional question
+- Web page where a student dumps a messy list of things to do for the week + preferences (tasks can have a day like "Mon:")
+- "Organize my week" button sends it to the real OpenAI AI through a small local server (key stays on the server, never in the page)
+- AI returns a clean schedule table sorted by day, plus a friendly message and optional question
 - Follow-up box to answer the AI's question or ask for a change
 - Friendly, kind tone only — no pressure or judging (safety plan)
 - Quick "sign in" = just a first name, stored locally

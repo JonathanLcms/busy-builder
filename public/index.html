@@ -19,14 +19,14 @@
 
   <main>
     <section class="card">
-      <h2>1. Dump everything you need to do</h2>
-      <p class="hint">One thing per line. Times or lengths help, but aren't required.</p>
-      <textarea id="items" rows="8" placeholder="Math homework - 45 min&#10;Soccer practice 4:00-5:30 PM"></textarea>
+      <h2>1. Dump everything you need to do this week</h2>
+      <p class="hint">One thing per line. Put a day in front if it has one (like "Mon: soccer practice").</p>
+      <textarea id="items" rows="8" placeholder="Math homework - 45 min&#10;Mon: Soccer practice 4:00-5:30 PM"></textarea>
 
       <h2>2. Any preferences?</h2>
       <input id="prefs" type="text" placeholder="e.g. homework before dinner, a break every hour">
 
-      <button id="organize" class="big">Organize my day</button>
+      <button id="organize" class="big">Organize my week</button>
       <p id="status" role="status"></p>
     </section>
 
@@ -35,7 +35,7 @@
       <p id="ai-message" class="ai-msg"></p>
       <table id="schedule" hidden>
         <thead>
-          <tr><th>Start</th><th>End</th><th>Activity</th><th>Note</th></tr>
+          <tr><th>Day</th><th>Start</th><th>End</th><th>Activity</th><th>Note</th></tr>
         </thead>
         <tbody></tbody>
       </table>

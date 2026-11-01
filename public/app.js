@@ -74,16 +74,25 @@ async function ask(followUp) {
   }
 }
 
+const DAY_ORDER = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+
+function dayIndex(day) {
+  const i = DAY_ORDER.indexOf(String(day || '').slice(0, 3).toLowerCase());
+  return i === -1 ? 99 : i;
+}
+
 function showResult(result) {
   $('result').hidden = false;
   $('ai-message').textContent = result.message || '';
   const tbody = $('schedule').querySelector('tbody');
   tbody.innerHTML = '';
-  const hasRows = result.schedule && result.schedule.length > 0;
-  $('schedule').hidden = !hasRows;
-  (result.schedule || []).forEach(slot => {
+  const sorted = (result.schedule || [])
+    .slice()
+    .sort((a, b) => dayIndex(a.day) - dayIndex(b.day) || String(a.start).localeCompare(String(b.start)));
+  $('schedule').hidden = sorted.length === 0;
+  sorted.forEach(slot => {
     const tr = document.createElement('tr');
-    [slot.start, slot.end, slot.activity, slot.note].forEach(cell => {
+    [slot.day, slot.start, slot.end, slot.activity, slot.note].forEach(cell => {
       const td = document.createElement('td');
       td.textContent = cell || '';
       tr.appendChild(td);
