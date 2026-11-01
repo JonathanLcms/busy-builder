@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Busy Builder</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Busy Builder</h1>
+    <p class="tagline">Let's fix the busy schedule — free, instant, no sign-up needed.</p>
+    <div id="who">
+      <span id="hello"></span>
+      <input id="name" type="text" maxlength="20" placeholder="First name (optional)">
+      <button id="save-name">Save</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>1. Dump everything you need to do</h2>
+      <p class="hint">One thing per line. Times or lengths help, but aren't required.</p>
+      <textarea id="items" rows="8" placeholder="Math homework - 45 min&#10;Soccer practice 4:00-5:30 PM"></textarea>
+
+      <h2>2. Any preferences?</h2>
+      <input id="prefs" type="text" placeholder="e.g. homework before dinner, a break every hour">
+
+      <button id="organize" class="big">Organize my day</button>
+      <p id="status" role="status"></p>
+    </section>
+
+    <section id="result" class="card" hidden>
+      <h2>Your schedule</h2>
+      <p id="ai-message" class="ai-msg"></p>
+      <table id="schedule" hidden>
+        <thead>
+          <tr><th>Start</th><th>End</th><th>Activity</th><th>Note</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <p id="ai-question" class="ai-question"></p>
+      <div id="followup">
+        <input id="reply" type="text" placeholder="Answer, or ask for a change...">
+        <button id="send-reply">Send</button>
+      </div>
+    </section>
+
+    <p class="safety">Saves on this computer only · Be kind — Busy Builder never judges your schedule.</p>
+  </main>
+
+  <script src="storage.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
