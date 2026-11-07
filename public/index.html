@@ -38,6 +38,18 @@
       <button id="tabbtn-week" class="tab">This Week<small>plan the whole week</small></button>
     </nav>
 
+    <section class="card shortcuts">
+      <h2>My shortcuts</h2>
+      <p class="hint">Make short codes for things you type a lot. Example: HW = Homework — then just type "HW 45 min".</p>
+      <div class="shortcut-row">
+        <input id="sc-abbr" type="text" maxlength="6" placeholder="HW">
+        <span class="eq">=</span>
+        <input id="sc-mean" type="text" placeholder="Homework">
+        <button id="sc-add">Add</button>
+      </div>
+      <div id="sc-list"></div>
+    </section>
+
     <div id="panel-today">
       <section class="card">
         <h2>1. Dump everything you need to do today</h2>

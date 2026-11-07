@@ -89,6 +89,46 @@ function sayHi(name) {
   $('hello').textContent = name ? `Hi ${name}!` : '';
 }
 
+let shortcuts = Store.get('shortcuts', null);
+if (!shortcuts) {
+  shortcuts = [
+    { abbr: 'HW', meaning: 'Homework' },
+    { abbr: 'SP', meaning: 'Soccer practice' },
+  ];
+  Store.set('shortcuts', shortcuts);
+}
+
+function renderShortcuts() {
+  const host = $('sc-list');
+  host.innerHTML = '';
+  shortcuts.forEach((s, i) => {
+    const chip = document.createElement('span');
+    chip.className = 'sc-chip';
+    chip.textContent = `${s.abbr} = ${s.meaning}`;
+    const x = document.createElement('button');
+    x.className = 'sc-x';
+    x.textContent = '×';
+    x.addEventListener('click', () => {
+      shortcuts.splice(i, 1);
+      Store.set('shortcuts', shortcuts);
+      renderShortcuts();
+    });
+    chip.appendChild(x);
+    host.appendChild(chip);
+  });
+}
+
+function addShortcut() {
+  const abbr = $('sc-abbr').value.trim().toUpperCase();
+  const meaning = $('sc-mean').value.trim();
+  if (!abbr || !meaning || shortcuts.some(s => s.abbr === abbr)) return;
+  shortcuts.push({ abbr, meaning });
+  Store.set('shortcuts', shortcuts);
+  $('sc-abbr').value = '';
+  $('sc-mean').value = '';
+  renderShortcuts();
+}
+
 function setBusy(t, busy) {
   $(t.ids.organize).disabled = busy;
   $(t.ids.send).disabled = busy;
@@ -124,7 +164,7 @@ async function ask(t, followUp) {
     const res = await fetch('/api/ask', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ scope: t.scope, items, preferences: prefs, messages: t.messages }),
+      body: JSON.stringify({ scope: t.scope, items, preferences: prefs, messages: t.messages, shortcuts }),
     });
     const data = await res.json();
     if (!res.ok || !data.ok) {
@@ -291,6 +331,14 @@ function init() {
   $('tabbtn-today').addEventListener('click', () => selectTab('today'));
   $('tabbtn-week').addEventListener('click', () => selectTab('week'));
   selectTab(Store.get('tab', 'today'));
+  $('sc-add').addEventListener('click', addShortcut);
+  $('sc-mean').addEventListener('keydown', e => {
+    if (e.key === 'Enter') addShortcut();
+  });
+  $('sc-abbr').addEventListener('keydown', e => {
+    if (e.key === 'Enter') $('sc-mean').focus();
+  });
+  renderShortcuts();
 }
 
 init();
