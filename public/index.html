@@ -9,7 +9,14 @@
 <body>
   <header>
     <h1>Busy Builder</h1>
-    <p class="tagline">Let's fix the busy schedule — free, instant, no sign-up needed.</p>
+    <p class="tagline">Let's fix the busy schedule — free, instant, made for students.</p>
+    <div class="steps">
+      <span>1. Dump your tasks</span>
+      <span class="arrow">→</span>
+      <span>2. Add your preferences</span>
+      <span class="arrow">→</span>
+      <span>3. Get a clean schedule</span>
+    </div>
     <div id="who">
       <span id="hello"></span>
       <input id="name" type="text" maxlength="20" placeholder="First name (optional)">
@@ -19,8 +26,8 @@
 
   <main>
     <nav class="tabs">
-      <button id="tabbtn-today" class="tab">Today</button>
-      <button id="tabbtn-week" class="tab">This Week</button>
+      <button id="tabbtn-today" class="tab">Today<small>plan one day</small></button>
+      <button id="tabbtn-week" class="tab">This Week<small>plan the whole week</small></button>
     </nav>
 
     <div id="panel-today">
