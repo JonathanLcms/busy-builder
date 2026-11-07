@@ -2,6 +2,7 @@
 
 - OpenAI model with "luna" in its name: `gpt-5.6-luna`
 - Saves on this computer only for now
+- After each save point, push it to GitHub.
 
 ## How to run
 Open a terminal in this folder and run:
