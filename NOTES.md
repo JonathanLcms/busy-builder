@@ -12,7 +12,7 @@ Then open http://localhost:3000 in your browser.
 
 ## What's done (V1)
 - Two tabs at the top: "Today" (one-day schedule) and "This Week" (whole week)
-- Each tab: dump a messy list + preferences, same AI organizes it (week tasks can have a day like "Mon:")
+- Today tab: one dump box + preferences; Week tab: an input box for each weekday (Mon-Sun) plus an "Any day" box — same AI organizes both
 - Week results show in sections per day (Monday, Tuesday, ...); today shows one table
 - Buttons send it to the real OpenAI AI through a small local server (key stays on the server, never in the page)
 - Follow-up box to answer the AI's question or ask for a change

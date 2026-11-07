@@ -8,14 +8,12 @@ const Store = {
     'Read chapter 5 of science book - 20 min',
   ],
 
-  sampleItems: [
-    'Math homework - 45 min',
-    'Mon: Soccer practice 4:00-5:30 PM',
-    'Wed: Soccer practice 4:00-5:30 PM',
-    'Eat dinner - 30 min',
-    'Read chapter 5 of science book - 20 min',
-    'Sat: Clean my room - 15 min',
-  ],
+  sampleWeekDays: {
+    mon: 'Soccer practice 4:00-5:30 PM',
+    wed: 'Soccer practice 4:00-5:30 PM',
+    sat: 'Clean my room - 15 min',
+    any: 'Math homework - 45 min\nEat dinner - 30 min\nRead chapter 5 of science book - 20 min',
+  },
 
   load() {
     try {

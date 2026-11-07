@@ -51,8 +51,17 @@
     <div id="panel-week" hidden>
       <section class="card">
         <h2>1. Dump everything you need to do this week</h2>
-        <p class="hint">One thing per line. Put a day in front if it has one (like "Mon: soccer practice").</p>
-        <textarea id="items" rows="8" placeholder="Math homework - 45 min&#10;Mon: Soccer practice 4:00-5:30 PM"></textarea>
+        <p class="hint">Put each thing under the day it belongs to. Not sure? Use "Any day".</p>
+        <div class="week-grid">
+          <div class="day-box"><h4>Mon</h4><textarea id="w-mon" rows="4" placeholder="Soccer practice 4-5:30 PM"></textarea></div>
+          <div class="day-box"><h4>Tue</h4><textarea id="w-tue" rows="4"></textarea></div>
+          <div class="day-box"><h4>Wed</h4><textarea id="w-wed" rows="4" placeholder="Soccer practice 4-5:30 PM"></textarea></div>
+          <div class="day-box"><h4>Thu</h4><textarea id="w-thu" rows="4"></textarea></div>
+          <div class="day-box"><h4>Fri</h4><textarea id="w-fri" rows="4"></textarea></div>
+          <div class="day-box"><h4>Sat</h4><textarea id="w-sat" rows="4" placeholder="Clean my room - 15 min"></textarea></div>
+          <div class="day-box"><h4>Sun</h4><textarea id="w-sun" rows="4"></textarea></div>
+          <div class="day-box any"><h4>Any day</h4><textarea id="w-any" rows="4" placeholder="Math homework - 45 min"></textarea></div>
+        </div>
 
         <h2>2. Any preferences?</h2>
         <input id="prefs" type="text" placeholder="e.g. homework before dinner, a break every hour">

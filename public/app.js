@@ -27,15 +27,61 @@ const TABS = {
   week: {
     scope: 'week',
     ids: {
-      items: 'items', prefs: 'prefs', organize: 'organize', status: 'status',
+      prefs: 'prefs', organize: 'organize', status: 'status',
       result: 'result', message: 'ai-message', schedule: 'schedule',
       question: 'ai-question', reply: 'reply', send: 'send-reply',
     },
+    dayBoxes: { mon: 'w-mon', tue: 'w-tue', wed: 'w-wed', thu: 'w-thu', fri: 'w-fri', sat: 'w-sat', sun: 'w-sun', any: 'w-any' },
     fields: { items: 'items', prefs: 'prefs', messages: 'messages', result: 'lastResult' },
     messages: [],
     lastResult: null,
   },
 };
+
+const DAY_PREFIX = { mon: 'Mon', tue: 'Tue', wed: 'Wed', thu: 'Thu', fri: 'Fri', sat: 'Sat', sun: 'Sun' };
+
+function collectItems(t) {
+  if (!t.dayBoxes) return $(t.ids.items).value.trim();
+  const map = {};
+  const lines = [];
+  Object.keys(t.dayBoxes).forEach(k => {
+    const text = $(t.dayBoxes[k]).value.trim();
+    map[k] = text;
+    text.split('\n').filter(l => l.trim()).forEach(l => {
+      lines.push(k === 'any' ? l.trim() : `${DAY_PREFIX[k]}: ${l.trim()}`);
+    });
+  });
+  t.pendingDayMap = map;
+  return lines.join('\n');
+}
+
+function migrateWeekItems(text) {
+  const map = {};
+  text.split('\n').forEach(line => {
+    const m = line.match(/^\s*(mon|tue|wed|thu|fri|sat|sun)[a-z]*\s*:\s*(.+)$/i);
+    if (m) {
+      const k = m[1].toLowerCase();
+      map[k] = (map[k] ? map[k] + '\n' : '') + m[2].trim();
+    } else if (line.trim()) {
+      map.any = (map.any ? map.any + '\n' : '') + line.trim();
+    }
+  });
+  return map;
+}
+
+function fillDayBoxes(t) {
+  let data = Store.get(t.fields.items, null);
+  if (!data) {
+    data = Store.sampleWeekDays;
+    Store.set(t.fields.items, data);
+  } else if (typeof data === 'string') {
+    data = migrateWeekItems(data);
+    Store.set(t.fields.items, data);
+  }
+  Object.keys(t.dayBoxes).forEach(k => {
+    $(t.dayBoxes[k]).value = data[k] || '';
+  });
+}
 
 function sayHi(name) {
   $('hello').textContent = name ? `Hi ${name}!` : '';
@@ -55,13 +101,13 @@ function friendlyError(code) {
 }
 
 async function ask(t, followUp) {
-  const items = $(t.ids.items).value.trim();
+  const items = collectItems(t);
   const prefs = $(t.ids.prefs).value.trim();
   if (!items) {
     $(t.ids.status).textContent = 'Add at least one thing to do first!';
     return;
   }
-  Store.set(t.fields.items, items);
+  Store.set(t.fields.items, t.dayBoxes ? t.pendingDayMap : items);
   Store.set(t.fields.prefs, prefs);
 
   if (followUp) {
@@ -171,16 +217,17 @@ function wireTab(t) {
 }
 
 function init() {
-  if (!Store.get('items')) {
-    Store.set('items', Store.sampleItems.join('\n'));
-  }
   if (!Store.get('today_items')) {
     Store.set('today_items', Store.sampleTodayItems.join('\n'));
   }
   Object.values(TABS).forEach(t => {
     t.messages = Store.get(t.fields.messages, []);
     t.lastResult = Store.get(t.fields.result, null);
-    $(t.ids.items).value = Store.get(t.fields.items, '');
+    if (t.dayBoxes) {
+      fillDayBoxes(t);
+    } else {
+      $(t.ids.items).value = Store.get(t.fields.items, '');
+    }
     $(t.ids.prefs).value = Store.get(t.fields.prefs, '');
     if (t.lastResult) showResult(t, t.lastResult);
     wireTab(t);
