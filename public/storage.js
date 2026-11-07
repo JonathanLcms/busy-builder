@@ -1,6 +1,13 @@
 const Store = {
   KEY: 'busybuilder_v1',
 
+  sampleTodayItems: [
+    'Math homework - 45 min',
+    'Soccer practice 4:00-5:30 PM',
+    'Eat dinner - 30 min',
+    'Read chapter 5 of science book - 20 min',
+  ],
+
   sampleItems: [
     'Math homework - 45 min',
     'Mon: Soccer practice 4:00-5:30 PM',

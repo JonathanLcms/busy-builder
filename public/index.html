@@ -18,33 +18,60 @@
   </header>
 
   <main>
-    <section class="card">
-      <h2>1. Dump everything you need to do this week</h2>
-      <p class="hint">One thing per line. Put a day in front if it has one (like "Mon: soccer practice").</p>
-      <textarea id="items" rows="8" placeholder="Math homework - 45 min&#10;Mon: Soccer practice 4:00-5:30 PM"></textarea>
+    <nav class="tabs">
+      <button id="tabbtn-today" class="tab">Today</button>
+      <button id="tabbtn-week" class="tab">This Week</button>
+    </nav>
 
-      <h2>2. Any preferences?</h2>
-      <input id="prefs" type="text" placeholder="e.g. homework before dinner, a break every hour">
+    <div id="panel-today">
+      <section class="card">
+        <h2>1. Dump everything you need to do today</h2>
+        <p class="hint">One thing per line. Times or lengths help, but aren't required.</p>
+        <textarea id="t-items" rows="8" placeholder="Math homework - 45 min&#10;Soccer practice 4:00-5:30 PM"></textarea>
 
-      <button id="organize" class="big">Organize my week</button>
-      <p id="status" role="status"></p>
-    </section>
+        <h2>2. Any preferences?</h2>
+        <input id="t-prefs" type="text" placeholder="e.g. homework before dinner, a break every hour">
 
-    <section id="result" class="card" hidden>
-      <h2>Your schedule</h2>
-      <p id="ai-message" class="ai-msg"></p>
-      <table id="schedule" hidden>
-        <thead>
-          <tr><th>Day</th><th>Start</th><th>End</th><th>Activity</th><th>Note</th></tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-      <p id="ai-question" class="ai-question"></p>
-      <div id="followup">
-        <input id="reply" type="text" placeholder="Answer, or ask for a change...">
-        <button id="send-reply">Send</button>
-      </div>
-    </section>
+        <button id="t-organize" class="big">Organize my day</button>
+        <p id="t-status" role="status"></p>
+      </section>
+
+      <section id="t-result" class="card" hidden>
+        <h2>Today's schedule</h2>
+        <p id="t-message" class="ai-msg"></p>
+        <div id="t-schedule"></div>
+        <p id="t-question" class="ai-question"></p>
+        <div class="followup">
+          <input id="t-reply" type="text" placeholder="Answer, or ask for a change...">
+          <button id="t-send">Send</button>
+        </div>
+      </section>
+    </div>
+
+    <div id="panel-week" hidden>
+      <section class="card">
+        <h2>1. Dump everything you need to do this week</h2>
+        <p class="hint">One thing per line. Put a day in front if it has one (like "Mon: soccer practice").</p>
+        <textarea id="items" rows="8" placeholder="Math homework - 45 min&#10;Mon: Soccer practice 4:00-5:30 PM"></textarea>
+
+        <h2>2. Any preferences?</h2>
+        <input id="prefs" type="text" placeholder="e.g. homework before dinner, a break every hour">
+
+        <button id="organize" class="big">Organize my week</button>
+        <p id="status" role="status"></p>
+      </section>
+
+      <section id="result" class="card" hidden>
+        <h2>Your week</h2>
+        <p id="ai-message" class="ai-msg"></p>
+        <div id="schedule"></div>
+        <p id="ai-question" class="ai-question"></p>
+        <div class="followup">
+          <input id="reply" type="text" placeholder="Answer, or ask for a change...">
+          <button id="send-reply">Send</button>
+        </div>
+      </section>
+    </div>
 
     <p class="safety">Saves on this computer only · Be kind — Busy Builder never judges your schedule.</p>
   </main>

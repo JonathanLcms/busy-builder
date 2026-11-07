@@ -10,7 +10,7 @@ Your job: take the user's messy list of things to do and organize it into a clea
 
 Rules you must always follow:
 - Use times properly. Never schedule two things at the same time or anything impossible.
-- The user may write a day before a task (like "Mon: soccer practice"). Build the schedule across the whole week using those days. If a task has no day, put it on a sensible day or ask the user which day they prefer.
+- The user may write a day before a task (like "Mon: soccer practice"). If the request is for the whole week, spread tasks across the days. If it is for one day only, schedule just that day. If a task has no day, put it on a sensible day or ask the user which day they prefer.
 - If something is unclear or missing (like how long travel to a location takes), ask the user a short question instead of guessing.
 - Make the schedule logical and realistic.
 - Always be kind, encouraging, and supportive. NEVER insult the user, never make them feel bad about being busy or behind, never pressure them. Use friendly nudges like "let's fix the busy schedule" instead of demands.
@@ -90,15 +90,18 @@ async function callResponses(key, model, messages) {
   return { ok: true, raw: data.output_text || '' };
 }
 
-async function askAI({ items, preferences, messages }) {
+async function askAI({ scope, items, preferences, messages }) {
   const key = readApiKey();
   if (!key) return { ok: false, code: 'NO_KEY', error: 'No API key found in .env' };
   const model = readModel();
+  const scopeText = scope === 'day'
+    ? 'Here is my lump of things to do for TODAY only (schedule just this one day):'
+    : 'Here is my lump of things to do for the WEEK:';
   const chatMessages = [
     { role: 'system', content: SYSTEM_PROMPT },
     {
       role: 'user',
-      content: `Here is my lump of things to do:\n${items}\n\nMy preferences: ${preferences || 'none given'}`,
+      content: `${scopeText}\n${items}\n\nMy preferences: ${preferences || 'none given'}`,
     },
     ...(Array.isArray(messages) ? messages : []),
   ];

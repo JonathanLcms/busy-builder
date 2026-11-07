@@ -152,14 +152,43 @@ th {
   display: none;
 }
 
-#followup {
+.followup {
   display: flex;
   gap: 8px;
   margin-top: 10px;
 }
 
-#followup input {
+.followup input {
   flex: 1;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.tab {
+  flex: 1;
+  background: #dbeafe;
+  color: #1e40af;
+  font-weight: 600;
+  padding: 12px;
+}
+
+.tab:hover:not(.active) {
+  background: #bfdbfe;
+}
+
+.tab.active {
+  background: #2563eb;
+  color: #fff;
+}
+
+.day-section h3 {
+  margin: 16px 0 4px;
+  color: #2563eb;
+  font-size: 1rem;
 }
 
 .safety {
