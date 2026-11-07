@@ -19,6 +19,7 @@ const TABS = {
       items: 't-items', prefs: 't-prefs', organize: 't-organize', status: 't-status',
       result: 't-result', message: 't-message', schedule: 't-schedule',
       question: 't-question', reply: 't-reply', send: 't-send',
+      clear: 't-clear', copy: 't-copy',
     },
     fields: { items: 'today_items', prefs: 'today_prefs', messages: 'today_messages', result: 'today_lastResult' },
     messages: [],
@@ -30,6 +31,7 @@ const TABS = {
       prefs: 'prefs', organize: 'organize', status: 'status',
       result: 'result', message: 'ai-message', schedule: 'schedule',
       question: 'ai-question', reply: 'reply', send: 'send-reply',
+      clear: 'w-clear', copy: 'w-copy',
     },
     dayBoxes: { mon: 'w-mon', tue: 'w-tue', wed: 'w-wed', thu: 'w-thu', fri: 'w-fri', sat: 'w-sat', sun: 'w-sun', any: 'w-any' },
     fields: { items: 'items', prefs: 'prefs', messages: 'messages', result: 'lastResult' },
@@ -90,7 +92,8 @@ function sayHi(name) {
 function setBusy(t, busy) {
   $(t.ids.organize).disabled = busy;
   $(t.ids.send).disabled = busy;
-  $(t.ids.status).textContent = busy ? 'Thinking...' : '';
+  $(t.ids.status).textContent = busy ? 'Thinking' : '';
+  $(t.ids.status).classList.toggle('thinking', busy);
 }
 
 function friendlyError(code) {
@@ -194,6 +197,49 @@ function showResult(t, result) {
   $(t.ids.reply).value = '';
 }
 
+function scheduleText(t, result) {
+  const lines = [];
+  if (t.scope === 'week') {
+    const groups = {};
+    (result.schedule || []).forEach(slot => {
+      const name = dayName(slot.day);
+      (groups[name] = groups[name] || []).push(slot);
+    });
+    Object.keys(groups).forEach(name => {
+      lines.push(name.toUpperCase());
+      groups[name].forEach(s => lines.push(`  ${s.start} - ${s.end}  ${s.activity}${s.note ? ' (' + s.note + ')' : ''}`));
+    });
+  } else {
+    (result.schedule || []).forEach(s => lines.push(`${s.start} - ${s.end}  ${s.activity}${s.note ? ' (' + s.note + ')' : ''}`));
+  }
+  if (result.message) lines.push('', result.message);
+  if (result.question) lines.push('', result.question);
+  return lines.join('\n');
+}
+
+function copySchedule(t) {
+  if (!t.lastResult) return;
+  const text = scheduleText(t, t.lastResult);
+  navigator.clipboard.writeText(text).then(() => {
+    $(t.ids.copy).textContent = 'Copied!';
+    setTimeout(() => { $(t.ids.copy).textContent = 'Copy schedule'; }, 1500);
+  });
+}
+
+function clearTab(t) {
+  if (t.dayBoxes) {
+    Object.keys(t.dayBoxes).forEach(k => { $(t.dayBoxes[k]).value = ''; });
+  } else {
+    $(t.ids.items).value = '';
+  }
+  $(t.ids.prefs).value = '';
+  $(t.ids.result).hidden = true;
+  $(t.ids.status).textContent = '';
+  t.messages = [];
+  t.lastResult = null;
+  Object.values(t.fields).forEach(field => Store.remove(field));
+}
+
 function selectTab(name) {
   $('panel-today').hidden = name !== 'today';
   $('panel-week').hidden = name !== 'week';
@@ -214,6 +260,8 @@ function wireTab(t) {
       if (text) ask(t, text);
     }
   });
+  $(t.ids.clear).addEventListener('click', () => clearTab(t));
+  $(t.ids.copy).addEventListener('click', () => copySchedule(t));
 }
 
 function init() {

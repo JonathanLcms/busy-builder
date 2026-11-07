@@ -279,8 +279,96 @@ th {
   font-size: 1.05rem;
 }
 
+.logo-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.1em;
+  height: 1.1em;
+  background: #fff;
+  color: #7c3aed;
+  border-radius: 0.3em;
+  font-size: 0.85em;
+  vertical-align: baseline;
+}
+
+.chips {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.chips span {
+  background: #fff;
+  color: #6d28d9;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid #ddd6fe;
+  border-radius: 999px;
+  padding: 5px 12px;
+}
+
+.ghost {
+  background: transparent;
+  color: #7c3aed;
+  border: 2px solid #ddd6fe;
+  font-size: 0.9rem;
+  padding: 8px 14px;
+}
+
+.ghost:hover:not(:disabled) {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+}
+
+#status.thinking::after,
+#t-status.thinking::after {
+  content: '';
+  animation: thinking-dots 1.2s steps(4) infinite;
+}
+
+@keyframes thinking-dots {
+  0% { content: ''; }
+  25% { content: '.'; }
+  50% { content: '..'; }
+  75% { content: '...'; }
+}
+
+.day-section {
+  border-left: 4px solid #c4b5fd;
+  padding-left: 14px;
+  margin-bottom: 8px;
+}
+
+tbody tr:hover {
+  background: #f5f3ff;
+}
+
+.foot {
+  text-align: center;
+  padding-bottom: 20px;
+}
+
 .safety {
   text-align: center;
   font-size: 0.8rem;
   color: #9ca3af;
+  margin-bottom: 4px;
+}
+
+.why {
+  font-size: 0.85rem;
+  color: #6d28d9;
+  font-weight: 600;
+  max-width: 520px;
+  margin: 0 auto;
 }

@@ -37,4 +37,10 @@ const Store = {
     data[field] = value;
     this.saveAll(data);
   },
+
+  remove(field) {
+    const data = this.load();
+    delete data[field];
+    this.saveAll(data);
+  },
 };
