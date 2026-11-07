@@ -21,9 +21,15 @@ Then open http://localhost:3000 in your browser.
 - Everything saves in the browser (localStorage) via storage.js, with made-up sample items
 - "Thinking..." shown and button disabled while the AI works; friendly error if the key or internet fails
 
-## What's next
-- Test saving + AI in the browser
-- Record a short video of the main job (dump list → organized schedule)
+## Where we stopped (Nov 7)
+What works now:
+- Two tabs — "Today" (one dump box) and "This Week" (a box per weekday + "Any day")
+- Real AI organizes tasks into a schedule, asks questions first, stays kind
+- Saves in the browser, Clear button resets a tab, Copy button copies the schedule
+- Friendly student design with trust chips + the 52% stat in the footer
+
+Very next change I want:
+- Nothing new requested yet — next step is to try the full flow in the browser and record the 4-minute demo video
 
 ## Maybe Later
 - Real database instead of localStorage (storage.js is the only file to swap)
