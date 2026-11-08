@@ -280,7 +280,7 @@ function clearTab(t) {
   Object.values(t.fields).forEach(field => Store.remove(field));
 }
 
-const TAB_NAMES = ['today', 'week', 'alarms'];
+const TAB_NAMES = ['today', 'week', 'alarms', 'email'];
 
 function selectTab(name) {
   TAB_NAMES.forEach(n => {
@@ -288,6 +288,25 @@ function selectTab(name) {
     $('tabbtn-' + n).classList.toggle('active', n === name);
   });
   Store.set('tab', name);
+}
+
+function emailSchedule() {
+  const email = $('em-addr').value.trim();
+  if (!email.includes('@')) {
+    $('em-status').textContent = 'Enter a real email first.';
+    return;
+  }
+  Store.set('schedule_email', email);
+  const parts = [];
+  if (TABS.today.lastResult) parts.push('TODAY\n' + scheduleText(TABS.today, TABS.today.lastResult));
+  if (TABS.week.lastResult) parts.push('THE WEEK\n' + scheduleText(TABS.week, TABS.week.lastResult));
+  if (!parts.length) {
+    $('em-status').textContent = 'Make a schedule first (Today or This Week tab), then come back.';
+    return;
+  }
+  const body = parts.join('\n\n') + '\n\n— sent from Busy Builder';
+  window.location.href = `mailto:${email}?subject=${encodeURIComponent('My Busy Builder schedule')}&body=${encodeURIComponent(body)}`;
+  $('em-status').textContent = 'Opening your email app — just press send there!';
 }
 
 let alarms = Store.get('alarms', []);
@@ -426,6 +445,8 @@ function init() {
   renderAlarms();
   checkAlarms();
   setInterval(checkAlarms, 15000);
+  $('em-addr').value = Store.get('schedule_email', '');
+  $('em-go').addEventListener('click', emailSchedule);
   $('sc-add').addEventListener('click', addShortcut);
   $('sc-mean').addEventListener('keydown', e => {
     if (e.key === 'Enter') addShortcut();

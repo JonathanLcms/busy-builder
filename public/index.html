@@ -42,6 +42,7 @@
       <button id="tabbtn-today" class="tab">Today<small>plan one day</small></button>
       <button id="tabbtn-week" class="tab">This Week<small>plan the whole week</small></button>
       <button id="tabbtn-alarms" class="tab">Alarms<small>get reminded</small></button>
+      <button id="tabbtn-email" class="tab">Email<small>send your schedule</small></button>
     </nav>
 
     <section class="card shortcuts">
@@ -139,6 +140,17 @@
         <h2>Your alarms</h2>
         <div id="al-list"></div>
         <p class="hint" id="al-empty">No alarms yet.</p>
+      </section>
+    </div>
+
+    <div id="panel-email" hidden>
+      <section class="card">
+        <h2>Email your schedule <span class="opt-badge">optional</span></h2>
+        <p class="hint">This is optional — Busy Builder works fine without it.</p>
+        <p>Type your email, press the button, and <strong>your own email app opens</strong> with your finished schedule already written inside — every event on its own line with its start time, end time, and name. You just press send.</p>
+        <input id="em-addr" type="email" placeholder="you@example.com">
+        <button id="em-go" class="big">Email my schedule</button>
+        <p id="em-status" role="status"></p>
       </section>
     </div>
 

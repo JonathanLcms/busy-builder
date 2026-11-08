@@ -7,3 +7,4 @@
 - Round 5 — Look + feel polish for judging (bigger title, steps, chips, Clear + Copy).
 - Round 6 — Custom shortcuts: users create codes like HW = Homework to type less; the AI writes the full name in the schedule.
 - Round 7 — Alarms tab: set a date/time + short note; a banner pops up and beeps when the time hits (while the app is open).
+- Round 8 — Email tab (optional): enter an email, press the button, and your own mail app opens with the schedule pre-filled — each event listed with its times and name.

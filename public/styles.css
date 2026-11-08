@@ -397,6 +397,26 @@ th {
   color: #dc2626;
 }
 
+.opt-badge {
+  display: inline-block;
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-radius: 999px;
+  padding: 3px 10px;
+  vertical-align: middle;
+  margin-left: 6px;
+}
+
+#em-status {
+  min-height: 1.4em;
+  margin: 8px 0 0;
+  font-weight: 600;
+  color: #7c3aed;
+}
+
 .alarm-form {
   display: flex;
   gap: 8px;
