@@ -2,6 +2,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const { askAI } = require('./ai');
+const { sendScheduleEmail } = require('./email');
 
 const PORT = 3000;
 const PUBLIC_DIR = path.join(__dirname, 'public');
@@ -25,6 +26,26 @@ const server = http.createServer((req, res) => {
       try {
         const payload = JSON.parse(body);
         const result = await askAI(payload);
+        res.writeHead(result.ok ? 200 : 502, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(result));
+      } catch {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: false, error: 'Bad request' }));
+      }
+    });
+    return;
+  }
+
+  if (req.method === 'POST' && req.url === '/api/email') {
+    let body = '';
+    req.on('data', chunk => {
+      body += chunk;
+      if (body.length > 100000) req.destroy();
+    });
+    req.on('end', async () => {
+      try {
+        const payload = JSON.parse(body);
+        const result = await sendScheduleEmail(payload);
         res.writeHead(result.ok ? 200 : 502, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify(result));
       } catch {

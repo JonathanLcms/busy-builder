@@ -290,23 +290,49 @@ function selectTab(name) {
   Store.set('tab', name);
 }
 
-function emailSchedule() {
+function emailError(code) {
+  if (code === 'NOT_CONFIGURED') return "Email sending isn't set up yet — the EmailJS keys aren't in .env.";
+  if (code === 'API_ERROR') return "The email service said no — the EmailJS keys may be wrong.";
+  return "Couldn't send — check your internet and try again.";
+}
+
+async function emailSchedule() {
   const email = $('em-addr').value.trim();
   if (!email.includes('@')) {
     $('em-status').textContent = 'Enter a real email first.';
     return;
   }
   Store.set('schedule_email', email);
-  const parts = [];
-  if (TABS.today.lastResult) parts.push('TODAY\n' + scheduleText(TABS.today, TABS.today.lastResult));
-  if (TABS.week.lastResult) parts.push('THE WEEK\n' + scheduleText(TABS.week, TABS.week.lastResult));
-  if (!parts.length) {
-    $('em-status').textContent = 'Make a schedule first (Today or This Week tab), then come back.';
+  if (!$('em-today').checked && !$('em-week').checked) {
+    $('em-status').textContent = 'Pick at least one schedule to send.';
     return;
   }
-  const body = parts.join('\n\n') + '\n\n— sent from Busy Builder';
-  window.location.href = `mailto:${email}?subject=${encodeURIComponent('My Busy Builder schedule')}&body=${encodeURIComponent(body)}`;
-  $('em-status').textContent = 'Opening your email app — just press send there!';
+  const parts = [];
+  if ($('em-today').checked && TABS.today.lastResult) parts.push('TODAY\n' + scheduleText(TABS.today, TABS.today.lastResult));
+  if ($('em-week').checked && TABS.week.lastResult) parts.push('THE WEEK\n' + scheduleText(TABS.week, TABS.week.lastResult));
+  if (!parts.length) {
+    $('em-status').textContent = "The checked schedule(s) don't exist yet — organize one first, then come back.";
+    return;
+  }
+  $('em-go').disabled = true;
+  $('em-status').textContent = 'Sending...';
+  try {
+    const res = await fetch('/api/email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        to: email,
+        subject: 'My Busy Builder schedule',
+        message: parts.join('\n\n') + '\n\n— sent from Busy Builder',
+      }),
+    });
+    const data = await res.json();
+    $('em-status').textContent = res.ok && data.ok ? 'Sent! Check the inbox.' : emailError(data.code);
+  } catch {
+    $('em-status').textContent = emailError('NETWORK');
+  } finally {
+    $('em-go').disabled = false;
+  }
 }
 
 let alarms = Store.get('alarms', []);

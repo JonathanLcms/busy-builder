@@ -147,9 +147,12 @@
       <section class="card">
         <h2>Email your schedule <span class="opt-badge">optional</span></h2>
         <p class="hint">This is optional — Busy Builder works fine without it.</p>
-        <p>Type your email, press the button, and <strong>your own email app opens</strong> with your finished schedule already written inside — every event on its own line with its start time, end time, and name. You just press send.</p>
+        <p>Type an email, pick which schedule(s) to send, press the button — and the schedule gets emailed straight to that address. Every event arrives on its own line with its start time, end time, and name.</p>
         <input id="em-addr" type="email" placeholder="you@example.com">
-        <button id="em-go" class="big">Email my schedule</button>
+        <p class="hint" style="margin-top:12px">Which schedule(s) do you want to send?</p>
+        <label class="check"><input id="em-today" type="checkbox" checked> Today's schedule</label>
+        <label class="check"><input id="em-week" type="checkbox" checked> This Week's schedule</label>
+        <button id="em-go" class="big">Send my schedule</button>
         <p id="em-status" role="status"></p>
       </section>
     </div>
