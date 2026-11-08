@@ -291,8 +291,7 @@ function selectTab(name) {
 }
 
 function emailError(code) {
-  if (code === 'NOT_CONFIGURED') return "Email sending isn't set up yet — the EmailJS keys aren't in .env.";
-  if (code === 'API_ERROR') return "The email service said no — the EmailJS keys may be wrong.";
+  if (code === 'API_ERROR') return 'The email service said no — check that the email address is real.';
   return "Couldn't send — check your internet and try again.";
 }
 
@@ -327,7 +326,9 @@ async function emailSchedule() {
       }),
     });
     const data = await res.json();
-    $('em-status').textContent = res.ok && data.ok ? 'Sent! Check the inbox.' : emailError(data.code);
+    $('em-status').textContent = res.ok && data.ok
+      ? 'Sent! Check the inbox — the very first email may ask you to click "Activate" once.'
+      : emailError(data.code);
   } catch {
     $('em-status').textContent = emailError('NETWORK');
   } finally {
