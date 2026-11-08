@@ -24,7 +24,7 @@ Then open http://localhost:3000 in your browser.
 
 ## Where we stopped (Nov 7)
 What works now:
-- Two tabs — "Today" (one dump box) and "This Week" (a box per weekday + "Any day")
+- Three tabs — "Today" (one dump box), "This Week" (a box per weekday + "Any day"), "Alarms" (timed reminders that pop + beep)
 - Custom shortcuts (like HW = Homework) — type less, AI writes the full name
 - Real AI organizes tasks into a schedule, asks questions first, stays kind
 - Saves in the browser, Clear button resets a tab, Copy button copies the schedule

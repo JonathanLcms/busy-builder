@@ -280,12 +280,94 @@ function clearTab(t) {
   Object.values(t.fields).forEach(field => Store.remove(field));
 }
 
+const TAB_NAMES = ['today', 'week', 'alarms'];
+
 function selectTab(name) {
-  $('panel-today').hidden = name !== 'today';
-  $('panel-week').hidden = name !== 'week';
-  $('tabbtn-today').classList.toggle('active', name === 'today');
-  $('tabbtn-week').classList.toggle('active', name === 'week');
+  TAB_NAMES.forEach(n => {
+    $('panel-' + n).hidden = n !== name;
+    $('tabbtn-' + n).classList.toggle('active', n === name);
+  });
   Store.set('tab', name);
+}
+
+let alarms = Store.get('alarms', []);
+let audioCtx = null;
+
+function beep() {
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.connect(g);
+    g.connect(audioCtx.destination);
+    o.frequency.value = 880;
+    g.gain.value = 0.2;
+    o.start();
+    o.stop(audioCtx.currentTime + 0.6);
+  } catch {}
+}
+
+function showAlarmAlert(a) {
+  $('al-alert-text').textContent = `Time's up: ${a.note}`;
+  $('al-alert').hidden = false;
+  beep();
+}
+
+function renderAlarms() {
+  const host = $('al-list');
+  host.innerHTML = '';
+  const sorted = alarms.slice().sort((a, b) => new Date(a.time) - new Date(b.time));
+  $('al-empty').hidden = sorted.length > 0;
+  sorted.forEach(a => {
+    const row = document.createElement('div');
+    row.className = 'alarm-row' + (a.fired ? ' done' : '');
+    const span = document.createElement('span');
+    const when = new Date(a.time);
+    span.textContent = `${when.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })} ${when.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })} — ${a.note}`;
+    row.appendChild(span);
+    const x = document.createElement('button');
+    x.className = 'sc-x';
+    x.textContent = '×';
+    x.addEventListener('click', () => {
+      alarms = alarms.filter(al => al.id !== a.id);
+      Store.set('alarms', alarms);
+      renderAlarms();
+    });
+    row.appendChild(x);
+    host.appendChild(row);
+  });
+}
+
+function addAlarm() {
+  const time = $('al-time').value;
+  const note = $('al-note').value.trim();
+  if (!time || !note) {
+    $('al-status').textContent = 'Pick a time and write a note first!';
+    return;
+  }
+  alarms.push({ id: Date.now(), time, note, fired: false });
+  Store.set('alarms', alarms);
+  $('al-time').value = '';
+  $('al-note').value = '';
+  $('al-status').textContent = 'Alarm set!';
+  renderAlarms();
+}
+
+function checkAlarms() {
+  const now = new Date();
+  let changed = false;
+  alarms.forEach(a => {
+    if (!a.fired && new Date(a.time) <= now) {
+      a.fired = true;
+      changed = true;
+      showAlarmAlert(a);
+    }
+  });
+  if (changed) {
+    Store.set('alarms', alarms);
+    renderAlarms();
+  }
 }
 
 function wireTab(t) {
@@ -328,9 +410,22 @@ function init() {
     Store.set('name', n);
     sayHi(n);
   });
-  $('tabbtn-today').addEventListener('click', () => selectTab('today'));
-  $('tabbtn-week').addEventListener('click', () => selectTab('week'));
+  TAB_NAMES.forEach(n => {
+    $('tabbtn-' + n).addEventListener('click', () => selectTab(n));
+  });
   selectTab(Store.get('tab', 'today'));
+  $('al-add').addEventListener('click', addAlarm);
+  $('al-note').addEventListener('keydown', e => {
+    if (e.key === 'Enter') addAlarm();
+  });
+  $('al-dismiss').addEventListener('click', () => { $('al-alert').hidden = true; });
+  document.addEventListener('click', () => {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+  });
+  renderAlarms();
+  checkAlarms();
+  setInterval(checkAlarms, 15000);
   $('sc-add').addEventListener('click', addShortcut);
   $('sc-mean').addEventListener('keydown', e => {
     if (e.key === 'Enter') addShortcut();

@@ -33,9 +33,15 @@
       <span>Kind AI, no pressure</span>
     </div>
 
+    <div id="al-alert" class="alarm-alert" hidden>
+      <span id="al-alert-text"></span>
+      <button id="al-dismiss">Got it</button>
+    </div>
+
     <nav class="tabs">
       <button id="tabbtn-today" class="tab">Today<small>plan one day</small></button>
       <button id="tabbtn-week" class="tab">This Week<small>plan the whole week</small></button>
+      <button id="tabbtn-alarms" class="tab">Alarms<small>get reminded</small></button>
     </nav>
 
     <section class="card shortcuts">
@@ -114,6 +120,25 @@
           <button id="send-reply">Send</button>
         </div>
         <button id="w-copy" class="ghost">Copy schedule</button>
+      </section>
+    </div>
+
+    <div id="panel-alarms" hidden>
+      <section class="card">
+        <h2>Set an alarm</h2>
+        <p class="hint">Pick a day and time, add a short note. It pops up and beeps while Busy Builder is open.</p>
+        <div class="alarm-form">
+          <input type="datetime-local" id="al-time">
+          <input id="al-note" type="text" maxlength="60" placeholder="What's it for? (e.g. Leave for soccer)">
+          <button id="al-add">Set alarm</button>
+        </div>
+        <p id="al-status" role="status"></p>
+      </section>
+
+      <section class="card">
+        <h2>Your alarms</h2>
+        <div id="al-list"></div>
+        <p class="hint" id="al-empty">No alarms yet.</p>
       </section>
     </div>
 

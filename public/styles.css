@@ -397,6 +397,63 @@ th {
   color: #dc2626;
 }
 
+.alarm-form {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.alarm-form input[type="datetime-local"] {
+  padding: 10px 12px;
+  border: 2px solid #ddd6fe;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.alarm-form #al-note {
+  flex: 1;
+  min-width: 200px;
+}
+
+.alarm-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 4px;
+  border-bottom: 1px solid #e9e5f5;
+  font-size: 0.95rem;
+}
+
+.alarm-row.done {
+  opacity: 0.45;
+  text-decoration: line-through;
+}
+
+.alarm-alert {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fef3c7;
+  border: 2px solid #f59e0b;
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #92400e;
+}
+
+.alarm-alert button {
+  background: #f59e0b;
+  color: #1f2937;
+}
+
+.alarm-alert button:hover:not(:disabled) {
+  background: #d97706;
+  color: #fff;
+}
+
 .day-section {
   border-left: 4px solid #c4b5fd;
   padding-left: 14px;
