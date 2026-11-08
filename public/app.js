@@ -326,9 +326,13 @@ async function emailSchedule() {
       }),
     });
     const data = await res.json();
-    $('em-status').textContent = res.ok && data.ok
-      ? 'Sent! Check the inbox — the very first email may ask you to click "Activate" once.'
-      : emailError(data.code);
+    if (res.ok && data.ok) {
+      $('em-status').textContent = data.needsActivation
+        ? 'Check that inbox! Click the "Activate Form" link in the email we just sent, then press Send again.'
+        : 'Sent! Check the inbox.';
+    } else {
+      $('em-status').textContent = emailError(data.code);
+    }
   } catch {
     $('em-status').textContent = emailError('NETWORK');
   } finally {
