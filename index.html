@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Busy Builder — AI schedule organizer for students</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%237c3aed'/><text x='32' y='45' font-size='38' font-family='Arial' font-weight='bold' fill='white' text-anchor='middle'>B</text></svg>">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Segoe UI", Arial, sans-serif; background: #f3f0ff; color: #1f2937; }
+    header { background: linear-gradient(120deg, #3b82f6, #8b5cf6 55%, #ec4899); color: #fff; padding: 48px 16px 36px; text-align: center; }
+    header h1 { margin: 0 0 8px; font-size: 3.2rem; font-weight: 800; }
+    .logo-badge { display: inline-flex; align-items: center; justify-content: center; width: 1.1em; height: 1.1em; background: #fff; color: #7c3aed; border-radius: 0.3em; font-size: 0.85em; }
+    .tagline { margin: 0; font-size: 1.2rem; opacity: 0.95; }
+    main { max-width: 720px; margin: 28px auto; padding: 0 16px; }
+    .card { background: #fff; border-radius: 16px; padding: 22px; margin-bottom: 20px; box-shadow: 0 4px 14px rgba(76,29,149,0.08); }
+    h2 { font-size: 1.2rem; margin: 0 0 10px; color: #6d28d9; }
+    ul { margin: 0; padding-left: 20px; line-height: 1.9; }
+    .chips { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
+    .chips span { background: #fff; color: #6d28d9; font-size: 0.8rem; font-weight: 600; border: 1px solid #ddd6fe; border-radius: 999px; padding: 5px 12px; }
+    .cta { display: block; text-align: center; background: linear-gradient(120deg, #fbbf24, #f59e0b); color: #1f2937; font-size: 1.15rem; font-weight: 700; padding: 16px; border-radius: 14px; text-decoration: none; box-shadow: 0 4px 12px rgba(245,158,11,0.35); }
+    code { background: #ede9fe; border-radius: 6px; padding: 2px 7px; font-size: 0.95em; }
+    .steps { line-height: 2; }
+    .foot { text-align: center; font-size: 0.8rem; color: #9ca3af; padding-bottom: 24px; }
+    .why { font-size: 0.85rem; color: #6d28d9; font-weight: 600; max-width: 520px; margin: 4px auto 0; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1><span class="logo-badge">B</span> Busy Builder</h1>
+    <p class="tagline">Let's fix the busy schedule — a free, kind AI schedule organizer for students.</p>
+  </header>
+
+  <main>
+    <div class="chips">
+      <span>Free forever</span>
+      <span>No account needed</span>
+      <span>Private — stays on your device</span>
+      <span>Kind AI, no pressure</span>
+    </div>
+
+    <section class="card">
+      <h2>What it does</h2>
+      <ul>
+        <li><strong>Today</strong> — dump a messy list, get a clean one-day schedule</li>
+        <li><strong>This Week</strong> — a box for each weekday, organized across the week</li>
+        <li><strong>Alarms</strong> — timed reminders that pop up and beep</li>
+        <li><strong>Email</strong> — send your finished schedule to any email</li>
+        <li><strong>Shortcuts</strong> — make your own codes (HW = Homework) to type less</li>
+      </ul>
+      <p>The AI plans realistic times, never double-books, asks when something's unclear — and is always encouraging, never judging.</p>
+    </section>
+
+    <section class="card">
+      <h2>Run it yourself</h2>
+      <div class="steps">
+        1. Get the code: <a href="https://github.com/JonathanLcms/busy-builder">github.com/JonathanLcms/busy-builder</a><br>
+        2. Put an OpenAI key in a <code>.env</code> file: <code>OPENAI_API_KEY=your-key</code><br>
+        3. Run <code>node server.js</code> and open <code>http://localhost:3000</code>
+      </div>
+      <p>The AI features run through a small local server so the key never leaves your computer — that's why this page is a showcase, not the live app.</p>
+    </section>
+
+    <a class="cta" href="https://github.com/JonathanLcms/busy-builder">View the code on GitHub</a>
+  </main>
+
+  <footer class="foot">
+    <p>Saves on your computer only · Built for the Presidential SI Challenge</p>
+    <p class="why">Why it matters: over 52% of high schoolers struggle with procrastination or time management. Busy Builder makes planning instant.</p>
+  </footer>
+</body>
+</html>
