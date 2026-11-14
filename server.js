@@ -5,7 +5,7 @@ const { askAI } = require('./ai');
 const { sendScheduleEmail } = require('./email');
 
 const PORT = 3000;
-const PUBLIC_DIR = path.join(__dirname, 'public');
+const PUBLIC_DIR = path.join(__dirname, 'docs');
 const TYPES = {
   '.html': 'text/html',
   '.css': 'text/css',

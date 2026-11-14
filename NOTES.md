@@ -11,6 +11,9 @@ Open a terminal in this folder and run:
 
 Then open http://localhost:3000 in your browser.
 
+Live site (app UI works; AI + email need the local server running):
+https://jonathanlcms.github.io/busy-builder/
+
 ## What's done (V1)
 - Two tabs at the top: "Today" (one-day schedule) and "This Week" (whole week)
 - Today tab: one dump box + preferences; Week tab: an input box for each weekday (Mon-Sun) plus an "Any day" box — same AI organizes both
