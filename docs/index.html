@@ -57,6 +57,15 @@
       <div id="sc-list"></div>
     </section>
 
+    <section id="key-row" class="card keyrow" hidden>
+      <h2>AI key needed (live site only)</h2>
+      <p class="hint">You're on the public site — paste your OpenAI key so the organizer can answer here. It's saved in this browser only, never uploaded or shared.</p>
+      <div class="followup">
+        <input id="key-input" type="password" placeholder="sk-...">
+        <button id="key-save">Save key</button>
+      </div>
+    </section>
+
     <div id="panel-today">
       <section class="card">
         <h2>1. Dump everything you need to do today</h2>
@@ -163,6 +172,8 @@
     </footer>
   </main>
 
+  <script src="ai-shared.js"></script>
+  <script src="ai-client.js"></script>
   <script src="storage.js"></script>
   <script src="app.js"></script>
 </body>

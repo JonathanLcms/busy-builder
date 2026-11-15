@@ -11,8 +11,10 @@ Open a terminal in this folder and run:
 
 Then open http://localhost:3000 in your browser.
 
-Live site (app UI works; AI + email need the local server running):
-https://jonathanlcms.github.io/busy-builder/
+Live site: https://jonathanlcms.github.io/busy-builder/
+On the live site it asks you to paste your OpenAI key once — saved in your
+browser only (never in code). With the local server running (localhost:3000)
+it uses .env instead — the key is never in the page there.
 
 ## What's done (V1)
 - Two tabs at the top: "Today" (one-day schedule) and "This Week" (whole week)

@@ -143,6 +143,43 @@ function friendlyError(code) {
   return "Hmm, the AI couldn't answer. Check your internet connection and that the key in .env is still good.";
 }
 
+let serverMode = null;
+
+async function detectServer() {
+  try {
+    const res = await fetch('/api/ask', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: '{}',
+    });
+    await res.json();
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function maybeShowKeyRow() {
+  $('key-row').hidden = !(serverMode === false && !Store.get('openai_key'));
+}
+
+async function askAIRequest(payload) {
+  if (serverMode === null) serverMode = await detectServer();
+  maybeShowKeyRow();
+  if (!serverMode) {
+    const key = Store.get('openai_key', '');
+    if (!key) return { ok: false, code: 'NEED_KEY' };
+    return AIClient.ask(key, payload);
+  }
+  const res = await fetch('/api/ask', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json();
+  return { ...data, ok: res.ok && data.ok };
+}
+
 async function ask(t, followUp) {
   const items = collectItems(t);
   const prefs = $(t.ids.prefs).value.trim();
@@ -161,14 +198,15 @@ async function ask(t, followUp) {
 
   setBusy(t, true);
   try {
-    const res = await fetch('/api/ask', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ scope: t.scope, items, preferences: prefs, messages: t.messages, shortcuts }),
+    const data = await askAIRequest({
+      scope: t.scope, items, preferences: prefs, messages: t.messages, shortcuts,
     });
-    const data = await res.json();
-    if (!res.ok || !data.ok) {
-      $(t.ids.status).textContent = friendlyError(data.code);
+    if (!data.ok) {
+      if (data.code === 'NEED_KEY') {
+        $(t.ids.status).textContent = 'Live site mode: paste your AI key in the "AI key needed" box first.';
+      } else {
+        $(t.ids.status).textContent = friendlyError(data.code);
+      }
       if (followUp) t.messages.pop();
       return;
     }
@@ -295,6 +333,35 @@ function emailError(code) {
   return "Couldn't send — check your internet and try again.";
 }
 
+async function sendEmailRequest(payload) {
+  if (serverMode === null) serverMode = await detectServer();
+  if (serverMode) {
+    const res = await fetch('/api/email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    return res.json();
+  }
+  const r = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(payload.to)}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify({
+      name: 'Busy Builder',
+      _subject: payload.subject,
+      _template: 'box',
+      _captcha: 'false',
+      message: payload.message,
+    }),
+    signal: AbortSignal.timeout(20000),
+  });
+  const data = await r.json().catch(() => ({}));
+  const msg = data.message || '';
+  if (/activ/i.test(msg)) return { ok: true, needsActivation: true };
+  if (r.ok && (data.success === 'true' || data.success === true)) return { ok: true };
+  return { ok: false, code: 'API_ERROR', error: msg || `HTTP ${r.status}` };
+}
+
 async function emailSchedule() {
   const email = $('em-addr').value.trim();
   if (!email.includes('@')) {
@@ -316,17 +383,12 @@ async function emailSchedule() {
   $('em-go').disabled = true;
   $('em-status').textContent = 'Sending...';
   try {
-    const res = await fetch('/api/email', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        to: email,
-        subject: 'My Busy Builder schedule',
-        message: parts.join('\n\n') + '\n\n— sent from Busy Builder',
-      }),
+    const data = await sendEmailRequest({
+      to: email,
+      subject: 'My Busy Builder schedule',
+      message: parts.join('\n\n') + '\n\n— sent from Busy Builder',
     });
-    const data = await res.json();
-    if (res.ok && data.ok) {
+    if (data.ok) {
       $('em-status').textContent = data.needsActivation
         ? 'Check that inbox! Click the "Activate Form" link in the email we just sent, then press Send again.'
         : 'Sent! Check the inbox.';
@@ -478,6 +540,20 @@ function init() {
   setInterval(checkAlarms, 15000);
   $('em-addr').value = Store.get('schedule_email', '');
   $('em-go').addEventListener('click', emailSchedule);
+  $('key-save').addEventListener('click', () => {
+    const k = $('key-input').value.trim();
+    if (!k) return;
+    Store.set('openai_key', k);
+    $('key-input').value = '';
+    $('key-row').hidden = true;
+  });
+  $('key-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') $('key-save').click();
+  });
+  detectServer().then(v => {
+    serverMode = v;
+    maybeShowKeyRow();
+  });
   $('sc-add').addEventListener('click', addShortcut);
   $('sc-mean').addEventListener('keydown', e => {
     if (e.key === 'Enter') addShortcut();

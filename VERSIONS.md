@@ -10,3 +10,4 @@
 - Round 8 — Email tab (optional): enter an email, press the button, and your own mail app opens with the schedule pre-filled — each event listed with its times and name.
 - Round 9 — Email tab now sends for real through the server via EmailJS (no mail app opens); added "which schedule(s)" checkboxes. Needs EmailJS keys in .env to activate.
 - Round 10 — App moved to docs/ so GitHub Pages serves the real app at jonathanlcms.github.io/busy-builder (AI + email still need the local server).
+- Round 11 — Live site can now do AI + email: when no local server is detected, the page asks for your OpenAI key once (saved in your browser only, never in code/GitHub) and calls OpenAI directly.
