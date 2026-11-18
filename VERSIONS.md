@@ -11,3 +11,4 @@
 - Round 9 — Email tab now sends for real through the server via EmailJS (no mail app opens); added "which schedule(s)" checkboxes. Needs EmailJS keys in .env to activate.
 - Round 10 — App moved to docs/ so GitHub Pages serves the real app at jonathanlcms.github.io/busy-builder (AI + email still need the local server).
 - Round 11 — Live site can now do AI + email: when no local server is detected, the page asks for your OpenAI key once (saved in your browser only, never in code/GitHub) and calls OpenAI directly.
+- Round 12 — Save file export/import: download all your work as a .json file and load it later to resume (AI key excluded for safety).

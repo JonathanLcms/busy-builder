@@ -397,6 +397,19 @@ th {
   color: #dc2626;
 }
 
+.save-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+#sv-status {
+  min-height: 1.4em;
+  margin: 8px 0 0;
+  font-weight: 600;
+  color: #7c3aed;
+}
+
 .opt-badge {
   display: inline-block;
   background: #fef3c7;

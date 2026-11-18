@@ -31,6 +31,7 @@ it uses .env instead — the key is never in the page there.
 What works now:
 - Four tabs — "Today" (one dump box), "This Week" (a box per weekday + "Any day"), "Alarms" (timed reminders), "Email" (optional — sends the schedule through the server via EmailJS; checkboxes pick Today/Week/both; needs EMAILJS_* keys in .env to work)
 - Custom shortcuts (like HW = Homework) — type less, AI writes the full name
+- "Save your work" card — download everything as a .json file, load it to resume (AI key excluded for safety)
 - Real AI organizes tasks into a schedule, asks questions first, stays kind
 - Saves in the browser, Clear button resets a tab, Copy button copies the schedule
 - Friendly student design with trust chips + the 52% stat in the footer

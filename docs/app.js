@@ -402,6 +402,34 @@ async function emailSchedule() {
   }
 }
 
+function exportSave() {
+  const data = Store.load();
+  delete data.openai_key;
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'busy-builder-save.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  $('sv-status').textContent = 'Save file downloaded!';
+}
+
+function importSave(file) {
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const data = JSON.parse(reader.result);
+      if (!data || typeof data !== 'object' || Array.isArray(data)) throw new Error('bad');
+      Store.saveAll(data);
+      $('sv-status').textContent = 'Save file loaded — refreshing...';
+      setTimeout(() => location.reload(), 800);
+    } catch {
+      $('sv-status').textContent = "That file isn't a Busy Builder save.";
+    }
+  };
+  reader.readAsText(file);
+}
+
 let alarms = Store.get('alarms', []);
 let audioCtx = null;
 
@@ -553,6 +581,12 @@ function init() {
   detectServer().then(v => {
     serverMode = v;
     maybeShowKeyRow();
+  });
+  $('exp-btn').addEventListener('click', exportSave);
+  $('imp-btn').addEventListener('click', () => $('imp-file').click());
+  $('imp-file').addEventListener('change', e => {
+    if (e.target.files[0]) importSave(e.target.files[0]);
+    e.target.value = '';
   });
   $('sc-add').addEventListener('click', addShortcut);
   $('sc-mean').addEventListener('keydown', e => {
